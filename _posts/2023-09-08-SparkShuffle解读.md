@@ -814,17 +814,37 @@ val interruptibleIter = new InterruptibleIterator[(Any, Any)](context, metricIte
 如果这里需要对数据进行聚合处理。则执行聚合过程
 
 ```scala
-// 更新每个读取的记录的Task上下文指标。.
-val readMetrics = context.taskMetrics.createTempShuffleReadMetrics()
-val metricIter = CompletionIterator[(Any, Any), Iterator[(Any, Any)]](
-  recordIter.map { record =>
-    readMetrics.incRecordsRead(1)
-    record
-  },
-  context.taskMetrics().mergeShuffleReadMetrics())
+val aggregatedIter: Iterator[Product2[K, C]] = if (dep.aggregator.isDefined) {
+  if (dep.mapSideCombine) {
+    val combinedKeyValuesIterator = interruptibleIter.asInstanceOf[Iterator[(K, C)]]
+    dep.aggregator.get.combineCombinersByKey(combinedKeyValuesIterator, context)
+  } else {
+    val keyValuesIterator = interruptibleIter.asInstanceOf[Iterator[(K, Nothing)]]
+    dep.aggregator.get.combineValuesByKey(keyValuesIterator, context)
+  }
+} else {
+  interruptibleIter.asInstanceOf[Iterator[Product2[K, C]]]
+}
 
-// 这里必须使用可中断的迭代器，以支持任务取消。
-val interruptibleIter = new InterruptibleIterator[(Any, Any)](context, metricIter)
+// ExternalAppendOnlyMap 是一个可溢写的keyvalue
+def combineCombinersByKey(
+    iter: Iterator[_ <: Product2[K, C]],
+    context: TaskContext): Iterator[(K, C)] = {
+  val combiners = new ExternalAppendOnlyMap[K, C, C](identity, mergeCombiners, mergeCombiners)
+  combiners.insertAll(iter)
+  updateMetrics(context, combiners)
+  combiners.iterator
+}
+
+
+def combineValuesByKey(
+    iter: Iterator[_ <: Product2[K, V]],
+    context: TaskContext): Iterator[(K, C)] = {
+  val combiners = new ExternalAppendOnlyMap[K, V, C](createCombiner, mergeValue, mergeCombiners)
+  combiners.insertAll(iter)
+  updateMetrics(context, combiners)
+  combiners.iterator
+}
 ```
 这里聚合操作使用上的 `ExternalAppendOnlyMap`, 它是一个基于磁盘的Map结构，实现过程类似与`ExternalSorter`，如果数据量过多会发生多次溢写磁盘的情况，最终在iterator遍历时，做合并输出。
 
