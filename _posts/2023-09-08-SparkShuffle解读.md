@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      Spark 技术 | Spark Shuffle 解读
-subtitle:   
+title:      Spark 教程 | Spark Shuffle 解读
+subtitle:   Spark
 date:       2023-09-28
 author:     Aiden
 header-img: img/data-stream.jpg

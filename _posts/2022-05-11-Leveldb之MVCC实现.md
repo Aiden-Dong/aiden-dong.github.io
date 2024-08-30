@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      Leveldb MVCC实现细节 | leveldb 篇
-subtitle:   
+title:      Leveldb 教程 | Leveldb MVCC实现细节 
+subtitle:   Leveldb
 date:       2022-05-19
 author:     Aiden
 header-img: img/post-bg-mma-1.jpg

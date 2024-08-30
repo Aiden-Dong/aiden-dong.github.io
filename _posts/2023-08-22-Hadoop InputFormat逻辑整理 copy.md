@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      Hadoop 技术 | InputFormat相关逻辑整理
-subtitle:   
+title:      Hadoop 教程 | InputFormat相关逻辑整理
+subtitle:   Hadoop
 date:       2023-08-22
 author:     Aiden
 header-img: img/data-stream.jpg
