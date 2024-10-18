@@ -1,4 +1,5 @@
 ---
+math: true
 pin: true
 title:      布隆过滤器(BloomFilter)
 

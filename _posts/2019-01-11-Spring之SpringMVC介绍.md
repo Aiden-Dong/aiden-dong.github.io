@@ -1,4 +1,5 @@
 ---
+math: true
 pin: true
 title:      Spring 教程 | MVC 技术
 

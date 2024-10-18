@@ -1,4 +1,5 @@
 ---
+math: true
 pin: true
 title:      CMake 教程 | CMake 从入门到应用
 

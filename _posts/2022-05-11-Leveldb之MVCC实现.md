@@ -1,4 +1,5 @@
 ---
+math: true
 pin: true
 title:      Leveldb 教程 | Leveldb MVCC实现细节 
 

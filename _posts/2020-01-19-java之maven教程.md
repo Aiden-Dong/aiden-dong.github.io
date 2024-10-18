@@ -1,4 +1,5 @@
 ---
+math: true
 pin: true
 title:      maven 教程 | maven 入门介绍
 

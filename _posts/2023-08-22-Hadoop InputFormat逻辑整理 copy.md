@@ -1,4 +1,5 @@
 ---
+math: true
 pin: true
 title:      Hadoop 教程 | InputFormat相关逻辑整理
 

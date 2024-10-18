@@ -1,4 +1,5 @@
 ---
+math: true
 pin: true
 title:      Spring 教程| AOP之基础之动态代理的实现
 

@@ -1,4 +1,5 @@
 ---
+math: true
 pin: true
 title:      Spring 教程 | Bean之配置文件的装载方式
 

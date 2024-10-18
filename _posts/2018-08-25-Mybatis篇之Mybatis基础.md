@@ -1,4 +1,5 @@
 ---
+math: true
 pin: true
 title:      Mybatis 教程| Mybatis 配置与初始化
 

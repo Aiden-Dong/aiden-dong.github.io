@@ -1,4 +1,5 @@
 ---
+math: true
 pin: true
 title:      Spring 教程 | AOP的切面编程技术 AspectJ
 
