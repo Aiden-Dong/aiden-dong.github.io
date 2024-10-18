@@ -86,7 +86,7 @@ private[spark] trait ShuffleManager {
 }
 ```
 
-![image.png]({{ site.url }}/source/nodebook/img/nodebook/spark_shuffle_1_1.png)
+![image.png]({{ site.url }}/source/nodebook/spark_shuffle_1_1.png)
 
 `ShuffuleManager` 总共有三部分组件， `ShuffleReader`, `ShuffleWriter`, `ShuffleHandle`.
 
@@ -118,7 +118,7 @@ private[spark] trait ShuffleManager {
 
 然后将这些分区的文件连接起来形成一个单一的输出文件，提供给reduce使用。
 
-![image.png]({{ site.url }}/source/nodebook/img/nodebook/spark_shuffle_1_2.png)
+![image.png]({{ site.url }}/source/nodebook/spark_shuffle_1_2.png)
 
 具体步骤如下：
 
@@ -231,7 +231,7 @@ sorter.insertRecord(serBuffer.getBuf(), Platform.BYTE_ARRAY_OFFSET, serializedRe
 **数据的写入包含数据头部(序列化化数据的长度)与数据体（序列化数据），写入时，顺便记录下当前的数据分区与数据索引位置(块号+块内偏移)，通过数据索引+数据头部，我们可以方便的取回数据。**
 
 
-![image.png]({{ site.url }}/source/nodebook/img/nodebook/spark_shuffle_1_3.png)
+![image.png]({{ site.url }}/source/nodebook/spark_shuffle_1_3.png)
 
 ```java
 // ShuffleExternalSorter.insertRecord
@@ -352,7 +352,7 @@ if (currentPartition != -1) {
 
 ##### 合并Spill文件形成最终的Shuffle文件
 
-![image.png]({{ site.url }}/source/nodebook/img/nodebook/spark_shuffle_1_4.png)
+![image.png]({{ site.url }}/source/nodebook/spark_shuffle_1_4.png)
 
 `UnsafeShuffleWriter` 在合并spill文件时会同时打开所有的 `SpillFile` ，然后按顺序将每个分区在所有`SpillFile`中的数据读取顺序写入到目标文件中，构建`ShuffleFile`
 
@@ -445,7 +445,7 @@ while (records.hasNext) {
 
 如果数组已经被填充满，数组将会被扩容到两倍。用来存放更多的数据。
 
-![image.png]({{ site.url }}/source/nodebook/img/nodebook/spark_shuffle_1_5.png)
+![image.png]({{ site.url }}/source/nodebook/spark_shuffle_1_5.png)
 
 数据每写入一条之后，都会判断`PartitionedPairBuffer`当前使用的内存大小。 过程请参考 `ExternalSorter.maybeSpillCollection`.
 
@@ -525,7 +525,7 @@ def insertAll(records: Iterator[Product2[K, V]]): Unit = {
 }
 ```
 
-![image.png]({{ site.url }}/source/nodebook/img/nodebook/spark_shuffle_1_6.png)
+![image.png]({{ site.url }}/source/nodebook/spark_shuffle_1_6.png)
 
 `PartitionedAppendOnlyMap`与 `PartitionedPairBuffer` 的底层存储基本类似，唯一区别就是在数据定位上，它不是顺序存取的，而是基于`hash(key)`来确定数据的索引位置。
 
@@ -662,7 +662,7 @@ private def mergeWithAggregation(
 
 当`ShuffleWriter`执行完成以后， **Executor** 会将Shuffle的`MapStatus`通过RPC通知到**Driver****端，Driver** 内部通过`MapOutputTrackerMaster`来维护每个shuffleId对应的所有的`MapStatus`, 用来提供给Reduce端读取数据。
 
-![image.png]({{ site.url }}/source/nodebook/img/nodebook/spark_shuffle_1_7.png)
+![image.png]({{ site.url }}/source/nodebook/spark_shuffle_1_7.png)
 
 
 ### ShuffleReader
@@ -683,7 +683,7 @@ private def mergeWithAggregation(
 
 6. 如果需要排序，则使用 `ExternalSorter` 进行排序处理
 
-![image.png]({{ site.url }}/source/nodebook/img/nodebook/spark_shuffle_1_8.png)
+![image.png]({{ site.url }}/source/nodebook/spark_shuffle_1_8.png)
 
 
 #### 获取Shuffle数据信息
@@ -704,7 +704,7 @@ private[spark] sealed trait MapStatus {
 
 当Reduce端任务启动后`MapOutputTrackerWorker`通过RPC向位于Driver端的发送请求，拉取对应 shuffleId 的 MapStatus 集合。
 
-![image.png]({{ site.url }}/source/nodebook/img/nodebook/spark_shuffle_1_9.png)
+![image.png]({{ site.url }}/source/nodebook/spark_shuffle_1_9.png)
 
 ```scala
 // MapOutputTrackerWorker.getStatuses
