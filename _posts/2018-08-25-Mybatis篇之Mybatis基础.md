@@ -87,7 +87,7 @@ public class FirstExample {
 
 原生的jdbc 代码阅读困难， 耦合性强，复用能力查，设计模式粗糙。为了将这个过程格式化或者说是模板话，便出来了好多工具。
 
-例如:**[DBUtil](https://commons.apache.org/proper/commons-dbutils/examples.html)**, **[Mybaitis](http://www.mybatis.org/mybatis-3/zh/index.html)**, **[Hibernate](http://hibernate.org/)** 等
+例如:**[DBUtil]
 
 接下来我们就介绍下Mybatis的使用方式。
 
