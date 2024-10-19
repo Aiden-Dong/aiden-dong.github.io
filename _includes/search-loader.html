@@ -16,7 +16,28 @@
   </article>
 {% endcapture %}
 
-{% capture not_found %}<p class="mt-5">{{ site.data.locales[include.lang].search.no_results }}</p>{% endcapture %}
+{% capture not_found %}
+<!--
+<p class="mt-5">{{ site.data.locales[include.lang].search.no_results }}</p>
+-->
+<header class="intro-header" style="background-image: url('source/internal/404-bg.jpg')">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<div class="site-heading" id="tag-heading">
+					<h1>404</h1>
+					<span class="subheading">当前页面已经移动，请从主页搜索查找</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<script>
+	document.body.classList.add('page-fullscreen');
+</script>
+
+{% endcapture %}
 
 <script>
   {%- comment -%} Note: dependent library will be loaded in `js-selector.html` {%- endcomment -%}
