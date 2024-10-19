@@ -1,0 +1,20 @@
+---
+layout: page
+title: "当前页面不存在"
+permalink: /404.html
+
+redirect_from:
+  - /norobots/
+  - /assets/
+  - /posts/
+---
+
+{% include lang.html %}
+
+<p class="lead">{{ site.data.locales[lang].not_found.statement }}</p>
+
+<ul>
+    <li><a href="{{url}}">进入主页</a></li>
+    <li><a href="{{url}}/categories/">进入目录页</a></li>
+    <li><a href="{{url}}/tags/">进入标签页</a></li>
+</ul>
