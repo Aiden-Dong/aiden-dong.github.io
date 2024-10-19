@@ -9,10 +9,10 @@ order: 4
 ![image.png]({{ site.url }}/source/internal/about.jpg){: .right width="200" height="200" }
 
 
-- **概况**：`好多年工作经验` | 男 | `2017年12月10日`—`至今` |   `已婚` 
-- **教育**： 本科 | 物理学专业 
-- **邮箱**：`aiden.dong.private@gmail.com` 
-- **地址**：山东
+- **概况** | `好多年工作经验` | 男 | `2017年12月10日`—`至今` |   `已婚` 
+- **教育** | 本科 | 物理学专业 
+- **邮箱** | `aiden.dong.private@gmail.com` 
+- **地址** | 山东
 
 ##### 自我评价
 
