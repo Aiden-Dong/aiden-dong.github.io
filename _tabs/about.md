@@ -6,7 +6,8 @@ order: 4
 
 #### 伟大的Aiden
 
-![|right|200x200](http://g.hiphotos.baidu.com/baike/pic/item/a08b87d6277f9e2fc11760a11630e924b899f37d.jpg)
+![image.png]({{ site.url }}/source/internal/about.jpg){: .right width="200" height="200" }
+
 
 - **概况**：`好多年工作经验` | 男 | `2017年12月10日`—`至今` |`已婚` 
 - **教育**： 本科 | 物理学专业 
@@ -28,8 +29,9 @@ order: 4
 - 参与 Apache 社区代码贡献。
 
 ##### 求职意向
+
 维度 | 说明 |
----- | ---- | 
+-- | -- | 
 **目标职能** | 数据存储计算引擎，数据平台架构 | 
 **期望薪资** | 面议 |
 **到岗时间** | 面议 |
