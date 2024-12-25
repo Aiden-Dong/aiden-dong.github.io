@@ -4,10 +4,9 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-#### 伟大的Aiden
+##### Aiden
 
-![image.png]({{ site.url }}/source/internal/about.jpg){: .right width="200" height="200" }
-
+![image.png]({{ site.url }}/source/internal/about.png){: .right width="200" height="200" }
 
 - **概况** | `好多年工作经验` | 男 | `2017年12月10日`—`至今` |   `已婚` 
 - **教育** | 本科 | 物理学专业 
@@ -74,7 +73,7 @@ order: 4
 
 - 为数据中台引入 `Apache Hudi` 能力， 用来解决用户表`upsert`等相关场景。主要工作内容是封装Hudi相关功能接口， 解决暴露的一些 Bug。从中台侧为用户带来简易的使用体验，用户无需关心底层细节，基于传统经验一键创建与使用hudi表数据。
 
-- 为数据中台引入`Apache Paimon`能力，解决用户在流批一体化的使用场景。主要工作内容为封装paimon到 spark, flink 引擎侧。屏蔽paimon的表细节。为用户支持无感知的使用方式， 用户通过传统SQL 无差异化使用paimon。
+- 为数据中台引入`Apache Paimon`能力，解决用户在流批一体化的使用场景。主要工作内容为封装paimon到 spark, flink 引擎侧并优化 paimon引擎功能。屏蔽paimon的表细节。为用户支持无感知的使用方式， 用户通过传统SQL 无差异化使用paimon。
 
 - 非结构化数据存储管理；主要工作内容是非结构化数据入湖，生命周期管理， 元信息抽取， embedding计算， 检索服务建设。帮助用户建立完善的非结构化数据管理体系。方便用户对非结构化数据维护，检索，计算能力。
 
