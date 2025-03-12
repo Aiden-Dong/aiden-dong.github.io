@@ -1,19 +1,31 @@
 <!-- Display GoatCounter pageviews -->
 <script>
-  let pv = document.getElementById('pageviews');
+  let pv = document.getElementById("pageviews");
 
   if (pv !== null) {
-    const uri = location.pathname.replace(/\/$/, '');
-    const url = `https://{{ site.analytics.goatcounter.id }}.goatcounter.com/counter/${encodeURIComponent(uri)}.json`;
+    const uri = location.pathname.replace(/\/$/, "");
+    const url = `https://{{ site.analytics.goatcounter.id }}.goatcounter.com/counter/${encodeURIComponent(
+      uri
+    )}.json`;
 
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        const count = data.count.replace(/\s/g, '');
+        const count = data.count.replace(/\s/g, "");
         pv.innerText = new Intl.NumberFormat().format(count);
       })
       .catch((error) => {
-        pv.innerText = '1';
+        pv.innerText = "1";
       });
   }
+</script>
+
+<script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?08e444bce5922870970f7769f063a570";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
 </script>
