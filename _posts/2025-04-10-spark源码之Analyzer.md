@@ -463,6 +463,7 @@ SELECT * FROM table1 a JOIN table1 b ON a.id = b.id;
      ```sql
      SELECT * FROM t1 WHERE EXISTS (SELECT 1 FROM t2 WHERE t2.id = t1.id)  -- `t1.id` 是外层引用
      ```
+     
 #### ResolveExpressionsWithNamePlaceholders
 
 负责处理逻辑计划中带有命名占位符（例如动态参数或模板化变量）的表达式，将其替换为具体的列、常量或函数调用，确保逻辑计划的完整性和可执行性
