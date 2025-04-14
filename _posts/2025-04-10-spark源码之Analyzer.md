@@ -143,11 +143,17 @@ WithCTE 节点中的 CTE 定义将按照它们被解析的顺序保存。
 
   在转换过程中，验证序数位置对应的列是否存在且类型合法，例如检查 `ORDER BY 3` 是否超出查询结果的列数范围
 
+
+---
+
 ### Disable Hints (Once)
 
 #### ResolveHints.DisableHints
 
 基于`spark.sql.optimizer.disableHints`判断是否移除SQL中所有的**Hints**
+
+
+---
 
 ### Hints (FixedPoint)
 
@@ -163,7 +169,6 @@ WithCTE 节点中的 CTE 定义将按照它们被解析的顺序保存。
 ```
 
 专门用于 解析并应用用户指定的**Join**策略提示，确保优化器能够根据提示选择合适的物理执行计划。
-
 
 1. **语法提示转换**
 
@@ -192,6 +197,8 @@ COALESCE Hint accepts names "COALESCE", "REPARTITION", and "REPARTITION_BY_RANGE
 
 检查提示参数是否合法（如分区数需为整数且大于0），若参数无效则生成警告并忽略该提示
 
+---
+
 ### Simple Sanity Check (Once)
 
 这个batch主要进行一些简单的检查校验， 确保语法准确
@@ -216,6 +223,8 @@ COALESCE Hint accepts names "COALESCE", "REPARTITION", and "REPARTITION_BY_RANGE
 5. **处理命名空间**  
    - 按优先级解析函数：临时 UDF > 内置函数 > Hive 函数（若启用 Hive 支持）。
 
+---
+
 ### Keep Legacy Outputs (Once)
 
 这个 batch 主要做一些兼容性处理
@@ -235,6 +244,8 @@ COALESCE Hint accepts names "COALESCE", "REPARTITION", and "REPARTITION_BY_RANGE
 
 4. **兼容旧版 UDF 行为**  
    保留旧版本对用户定义函数（UDF）输出类型的处理逻辑（如类型推导规则）。
+
+---
 
 ### Resolution (FixedPoint)
 
@@ -998,7 +1009,6 @@ SELECT transform(array_col, x -> x + 1) FROM table
   
   - **生成 `NamedLambdaVariable`**：将 `UnresolvedNamedLambdaVariable` 替换为具体的 `NamedLambdaVariable`，携带类型和作用域信息。  
 
-
 #### ResolveTimeZone
 
 专门用于解析和统一时间戳相关的时区设置，确保时间戳类型的数据在计算、存储和展示时具有一致的时区语义。
@@ -1054,7 +1064,6 @@ SELECT transform(array_col, x -> x + 1) FROM table
 4. **保证可重复性**  
   
    - **固定种子优化**：在需要可重复结果的场景（如测试），显式种子确保多次运行结果一致。
-
 
 #### ResolveBinaryArithmetic
 
@@ -1223,7 +1232,6 @@ SELECT transform(array_col, x -> x + 1) FROM table
      ```sql
      SELECT IF(1, 'true', 'false')  -- 1 视为 TRUE
      ```
-
 
 #### ResolveWithCTE
 
@@ -1449,6 +1457,8 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
 }
 ```
 
+---
+
 ### Remove TempResolvedColumn (Once)
 
 #### RemoveTempResolvedColumn
@@ -1461,6 +1471,8 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
   修剪 `Project` 操作中的冗余输出列（如未被后续操作引用的中间列）。
 3. **消除冗余计算**  
   减少不必要的数据传输和存储，提升查询性能。
+
+---
 
 ### Apply Char Padding (Once)
 
@@ -1484,7 +1496,9 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
 
 3. **兼容 ANSI SQL 标准**
   严格遵循 ANSI SQL 对 CHAR 类型的定义，避免隐式截断或未填充导致的语义歧义。
-  
+
+---
+
 ### Post-Hoc Resolution (Once)
 
 #### ResolveCommandsWithIfExists
@@ -1492,9 +1506,6 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
 `ResolveCommandsWithIfExists` 是 Spark SQL **Analyzer 阶段** 的关键规则，专门用于解析和处理 **DDL/DML 命令中的 `IF EXISTS` 或 `IF NOT EXISTS` 子句**，确保在存在性条件明确的情况下正确执行命令（如 `DROP TABLE`、`ALTER VIEW` 等）且避免抛出冗余错误。
 
 其核心目标是实现对数据库对象（表、视图、函数等）的**条件化操作**。
-
----
-
 
 1. **解析条件子句**  
   识别并处理 SQL 命令中的 `IF EXISTS` 或 `IF NOT EXISTS` 修饰符，将其逻辑绑定到操作中。例如：
@@ -1517,8 +1528,6 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
 #### DetectAmbiguousSelfJoin
 
 用于 **检测自连接（Self-Join）中潜在的列引用歧义**，避免因未明确限定列来源而导致的逻辑错误或结果不可预测。其核心目标是确保自连接操作中的列引用具有明确的上下文语义。
-
----
 
 1. **检测歧义列引用**  
   当同一张表以不同别名被多次引用（如自连接）时，若查询中引用的列未通过别名明确限定来源，则抛出 `AnalysisException`。  
@@ -1584,7 +1593,6 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
    - 转换为物理写入节点（如 `InsertIntoHadoopFsRelationCommand`）。
 
 #### DataSourceAnalysis
-
 
 用于 **解析和验证与外部数据源（如 Parquet、JDBC、CSV）相关的逻辑计划节点**，确保数据源的元数据、存储格式及访问参数符合预期，并将其转换为可直接执行的物理操作。其核心目标是解决数据源读写操作的类型适配、Schema 推断及执行计划生成问题。
 
@@ -1664,6 +1672,8 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
 }
 ```
 
+---
+
 ### Remove Unresolved Hints (Once)
 
 #### ResolveHints.RemoveAllHints
@@ -1679,6 +1689,7 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
 3. **保障逻辑计划纯净性**  
   确保优化器处理的逻辑计划中仅包含结构化操作（如 `Join`、`Filter`），不含原始提示符。
 
+---
 
 ### Nondeterministic (Once)
 
@@ -1695,6 +1706,8 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
 
 - **优化执行计划**  
   减少重复计算非确定性表达式的开销，提升查询性能。
+
+---
 
 ### UDF (Once)
 
@@ -1720,7 +1733,6 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
 
 其核心目标是解决 UDF 与 Dataset API 集成时的类型编码兼容性问题。
 
-
 1. **编码器绑定**  
    - 为 UDF 的输入参数和返回类型隐式推导或显式绑定对应的 Spark 编码器（`ExpressionEncoder`）。  
    - **示例**：UDF 参数为自定义 `case class` 时，自动生成该类的编码器。
@@ -1734,6 +1746,8 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
 
 4. **处理泛型类型**  
    - 通过类型擦除或 `TypeTag` 保留泛型信息，确保编码器正确匹配（如 `List[T]` 中的 `T` 需明确）。
+
+---
 
 ### UpdateNullability (Once)
 
@@ -1757,25 +1771,11 @@ case class PaimonStatisticsAnalysis(session: SparkSession) extends Rule[LogicalP
    - 为后续优化规则（如谓词下推、常量折叠）提供准确的空值信息，避免无效优化。  
    - **示例**：若某列被推断为非空，优化器可安全应用 `IS NOT NULL` 过滤。
 
+---
+
 ### Subquery (Once)
 
 #### UpdateOuterReferences
-
-其核心功能是 **处理逻辑计划中嵌套查询或关联子查询对外部作用域列的引用（即外部引用，Outer References）**，确保这些引用能够正确绑定到外层查询的列，
-
-从而保障关联子查询的语义正确性和执行计划生成的准确性。
-
-
-1. **解析外部引用**  
-   识别子查询中引用的外层查询的列，并将其与外部作用域的对应属性绑定。  
-   **示例**：  
-   ```sql
-   SELECT * FROM outer_table o 
-   WHERE EXISTS (SELECT 1 FROM inner_table i WHERE i.id = o.id)  -- o.id 是外部引用
-   ```
-
-markdown
-### **`UpdateOuterReferences` 的功能作用**
 
 `UpdateOuterReferences` 是 Spark SQL **Analyzer 阶段** 的关键规则，其核心功能是 **处理逻辑计划中嵌套查询或关联子查询对外部作用域列的引用（即外部引用，Outer References）**，确保这些引用能够正确绑定到外层查询的列，从而保障关联子查询的语义正确性和执行计划生成的准确性。
 
@@ -1793,6 +1793,8 @@ markdown
 
 3. **生成关联逻辑节点**
   将隐式关联子查询转换为显式的逻辑计划节点（如 LateralJoin），明确依赖关系。
+
+---
 
 ### Cleanup (FixedPoint)
 
@@ -1816,6 +1818,8 @@ markdown
 
 4. **提升可读性与性能**
   简化后的逻辑计划更简洁，减少优化器和执行引擎处理无关节点的开销。
+
+---
 
 ### HandleAnalysisOnlyCommand (Once)
 
